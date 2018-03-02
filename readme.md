@@ -1,3 +1,3 @@
-# certiwine
+# CertiWine API
 
-Welcome to certiwine
+The API to manage the Wine Certification System CertiWine
