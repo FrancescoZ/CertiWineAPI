@@ -25,17 +25,47 @@ exports.create_user = function(req, res, next) {
         if (err) 
           return error.error(err.message,res);
         else 
-          return res.json();
+          return res.json(userData);
       });
     } else 
       return error.error('Missing values',res);
-  };
+};
+
+exports.create_user_facebook = function(req, res, next) {
+    // confirm that user typed same password twice
+    if (req.body.email &&
+      req.body.facebook &&
+      req.body.name ) {
+      var userData = {
+        email: req.body.email,
+        name: req.body.name,
+        facebookToken: req.body.facebookToken
+      }
+      //use schema.create to insert data into the db
+      User.create(userData, function (err, user) {
+        if (err) 
+          return error.error(err.message,res);
+        else {
+          const payload = {
+            data: req.body.email+req.body.facebook
+          };
+          var token = jwt.sign(payload, config.secret, {
+            expiresIn: "30 days"
+          });
+          return res.json({ success: true, message: token});
+        }
+          
+      });
+    } else 
+      return error.error('Missing values',res);
+};
 
 exports.authenticate_user = function(req, res, next) {
-    if (!req.body.email || !req.body.password){
-      return error.error('Credential are missing',res);
+    if (!req.body.email || !req.body.password || req.body.password == "None"){
+      return error.error('Credential are missing or invalid',res);
     }
     User.authenticate(req.body.email,req.body.password, function(err,user){
+
       if (!user)
         return error.error('Wrong Credential',res);
       else{
@@ -45,9 +75,30 @@ exports.authenticate_user = function(req, res, next) {
         var token = jwt.sign(payload, config.secret, {
           expiresIn: "30 days"
         });
-        return res.json(token);
+        return res.json({ success: true, message: token});
       }
 
     });
     
+};
+
+exports.authenticate_user_facebook = function(req, res, next) {
+  if (!req.body.email){
+    return error.error('Credential are missing',res);
+  }
+  User.authenticate_facebook(req.body.email, function(err,user){
+    if (!user)
+      return error.error('Wrong Credential',res);
+    else{
+      const payload = {
+        data: req.body.email+"None"
+      };
+      var token = jwt.sign(payload, config.secret, {
+        expiresIn: "30 days"
+      });
+      return res.json({ success: true, message: token});
+    }
+
+  });
+  
 };

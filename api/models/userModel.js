@@ -13,6 +13,12 @@ var UserSchema = new mongoose.Schema({
     password: {
       type: String,
       required: true,
+      default: "None"
+    },
+    facebookToken: {
+      type: String,
+      default: "None",
+      required: true
     },
     name: String,
     admin: {
@@ -37,7 +43,10 @@ UserSchema.pre('save', function (next) {
 //authenticate input against database
 UserSchema.statics.authenticate = function authenticate(email, password, callback) {
   var User = mongoose.model('Users');
-  User.findOne({ email: email })
+  User.findOne({ 
+    email: email,
+    facebookToken: "None"
+   })
     .exec(function (err, user) {
       if (err) {
         return callback(err)
@@ -55,4 +64,23 @@ UserSchema.statics.authenticate = function authenticate(email, password, callbac
       })
     });
 }
+
+UserSchema.statics.authenticate_facebook = function authenticate(email, callback) {
+  var User = mongoose.model('Users');
+  User.findOne({ 
+    email: email,
+    password: "None"
+   })
+    .exec(function (err, user) {
+      if (err) {
+        return callback(err)
+      } else if (!user) {
+        var err = new Error('User not found.');
+        err.status = 401;
+        return callback(err);
+      }
+      return callback(null, user);
+    });
+}
+
 module.exports = mongoose.model('Users', UserSchema);
