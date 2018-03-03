@@ -13,9 +13,11 @@ exports.create_user = function(req, res, next) {
     
     if (req.body.email &&
       req.body.password &&
+      req.body.name &&
       req.body.passwordConf) {
       var userData = {
         email: req.body.email,
+        name: req.body.name,
         password: req.body.password
       }
       //use schema.create to insert data into the db

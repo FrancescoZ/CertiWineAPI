@@ -56,7 +56,6 @@ exports.new_station = function(req, res, next){
         req.params.userId) {
         var station = {
             name: req.body.name,
-            battery: 0,
             user: req.params.userId
             }
         Station.create(station,function (err, station) {

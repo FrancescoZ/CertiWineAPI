@@ -7,8 +7,16 @@ var stationSchema = new mongoose.Schema({
     type: String,
     required: true,
     },
-  battery: Number,
-  state: String,
+  battery: {
+    type: Number,
+    default: 0,
+    required: true
+  },
+  state: {
+    type:String,
+    required: true,
+    default: "Active"
+  },
   user: 
   { 
       type: Schema.Types.ObjectId, 

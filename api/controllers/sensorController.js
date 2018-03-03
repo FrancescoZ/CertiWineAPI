@@ -70,7 +70,6 @@ exports.new_sensor = function(req, res, next){
         req.params.userId) {
         var sensor = {
             name: req.body.name,
-            battery: 0,
             user: req.params.userId
             }
         Sensor.create(sensor,function (err, sensor) {

@@ -14,6 +14,7 @@ var UserSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+    name: String,
     admin: {
       type: Boolean,
       required: true,

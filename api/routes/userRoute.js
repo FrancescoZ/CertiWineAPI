@@ -4,6 +4,6 @@ module.exports = function(app) {
 
   app.route('/users/:userId')
     .get(user.get_user)
-    .post(user.update_user)
+    .put(user.update_user)
     .delete(user.delete_user);
 };

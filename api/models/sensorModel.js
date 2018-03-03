@@ -7,8 +7,16 @@ var sensorSchema = new mongoose.Schema({
     type: String,
     required: true,
     },
-  battery: Number,
-  state: String,
+    battery: {
+      type: Number,
+      default: 0,
+      required: true
+    },
+    state: {
+      type:String,
+      required: true,
+      default: "Active"
+    },
   station: {
       type: Schema.Types.ObjectId,
       ref: "Stations",
