@@ -24,8 +24,10 @@ exports.create_user = function(req, res, next) {
       User.create(userData, function (err, user) {
         if (err) 
           return error.error(err.message,res);
-        else 
-          return res.json(userData);
+        else {
+          var token = generateAuth(req.body.email,req.body.password)
+          return res.json({ success: true, message: token, userid: user._id});
+        }
       });
     } else 
       return error.error('Missing values',res);
@@ -46,13 +48,8 @@ exports.create_user_facebook = function(req, res, next) {
         if (err) 
           return error.error(err.message,res);
         else {
-          const payload = {
-            data: req.body.email+req.body.facebook
-          };
-          var token = jwt.sign(payload, config.secret, {
-            expiresIn: "30 days"
-          });
-          return res.json({ success: true, message: token});
+          var token = generateAuth(req.body.email,"None")
+          return res.json({ success: true, message: token, userid: user._id});
         }
           
       });
@@ -69,13 +66,8 @@ exports.authenticate_user = function(req, res, next) {
       if (!user)
         return error.error('Wrong Credential',res);
       else{
-        const payload = {
-          data: req.body.email+req.body.password
-        };
-        var token = jwt.sign(payload, config.secret, {
-          expiresIn: "30 days"
-        });
-        return res.json({ success: true, message: token});
+        var token = generateAuth(req.body.email,req.body.password)
+        return res.json({ success: true, message: token, userid: user._id});
       }
 
     });
@@ -90,15 +82,20 @@ exports.authenticate_user_facebook = function(req, res, next) {
     if (!user)
       return error.error('Wrong Credential',res);
     else{
-      const payload = {
-        data: req.body.email+"None"
-      };
-      var token = jwt.sign(payload, config.secret, {
-        expiresIn: "30 days"
-      });
-      return res.json({ success: true, message: token});
+      var token = generateAuth(req.body.email,"None")
+      return res.json({ success: true, message: token, userid: user._id});
     }
 
   });
   
 };
+
+function generateAuth(email,pass){
+  const payload = {
+    data: email+pass
+  };
+  var token = jwt.sign(payload, config.secret, {
+    expiresIn: "30 days"
+  });
+  return token
+}
