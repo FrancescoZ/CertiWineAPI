@@ -23,10 +23,10 @@ var valueSchema = new mongoose.Schema({
     type: Number,
     required: true
     },
-  sensor:
+  wine:
   {
     type: Schema.Types.ObjectId,
-    ref: 'Sensors',
+    ref: 'Wines',
     required: true
     },
 });

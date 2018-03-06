@@ -5,17 +5,23 @@ var Schema = mongoose.Schema;
 var wineSchema = new mongoose.Schema({
   name: String,
   year: Number,
-  alcool: Number,
+  info: String,
   sensor:
   {
     type: Schema.Types.ObjectId,
-    ref: 'sensor',
+    ref: 'Sensors',
+    required: true
+    },
+  station:
+  {
+    type: Schema.Types.ObjectId,
+    ref: 'Stations',
     required: true
     },
   user: 
   { 
       type: Schema.Types.ObjectId, 
-      ref: 'user',
+      ref: 'Users',
       required: true
     }
 });

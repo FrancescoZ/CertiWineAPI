@@ -15,9 +15,6 @@ module.exports = function(app) {
   app.route('/:userId/stations/:stationId/sensors')
     .get(sensors.get_sensor_by_station);
     
-  
   app.route('/:userId/stations/:stationId/sensors/:sensorId')
     .put(sensors.pair)
-    .get(values.get_values_by_sensor)
-    .post(values.new_value);
 };

@@ -25,6 +25,26 @@ var UserSchema = new mongoose.Schema({
       type: Boolean,
       required: true,
       default: false
+    },
+    alert_vib: {
+      type: Number,
+      required: true,
+      default: 12
+    },
+    alert_light: {
+      type: Number,
+      required: true,
+      default: 12
+    },
+    alert_temp: {
+      type: Number,
+      required: true,
+      default: 12
+    },
+    alert_hum: {
+      type: Number,
+      required: true,
+      default: 12
     }
   });
 

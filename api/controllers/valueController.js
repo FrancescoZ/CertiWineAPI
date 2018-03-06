@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
   Value = mongoose.model('Values'),
   error = require('../utils/error');
 
-exports.get_values_by_sensor_since_until = function(req, res, next) {
+exports.get_values_by_wine_since_until = function(req, res, next) {
     if (req.body.start &&
         req.body.end){
         Value.find({
@@ -11,7 +11,7 @@ exports.get_values_by_sensor_since_until = function(req, res, next) {
                 $gte: ISODate(req.body.start),
                 $lt: ISODate(req.body.end)
             },
-            "sensor" : req.params.sensorId
+            "wine" : req.params.wineId
         },
         function(err, values){
             res.json(values);
@@ -21,9 +21,9 @@ exports.get_values_by_sensor_since_until = function(req, res, next) {
         return error.error('Missing values',res);
 }
 
-exports.get_values_by_sensor = function(req, res, next) {
+exports.get_values_by_wine = function(req, res, next) {
     Value.find({
-        "sensor" : req.params.sensorId
+        "wine" : req.params.wineId
       },
       function(err, values){
         res.json(values);
@@ -37,14 +37,14 @@ exports.new_value = function(req, res, next){
         req.body.light &&
         req.body.hum &&
         req.body.temp &&
-        req.params.sensorId) {
+        req.params.wineId) {
         var value = {
             date: Date(req.body.date),
             vibration: req.body.vib,
             light: req.body.light,
             temperature: req.body.temp,
             humidity: req.body.hum,
-            sensor: req.params.sensorId
+            wine: req.params.sensorId
             }
         Value.create(value,function (err, value) {
           if (err) 

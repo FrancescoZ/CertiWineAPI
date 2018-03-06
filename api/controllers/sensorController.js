@@ -57,7 +57,8 @@ exports.get_sensor_by_user = function(req, res, next) {
 
 exports.get_sensor_by_station = function(req, res, next) {
     Sensor.find({
-        "station" : req.params.stationId
+        "station" : req.params.stationId,
+        "active" : false
       },
       function(err, sensors){
         res.json(sensors);

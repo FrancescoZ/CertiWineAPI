@@ -41,6 +41,7 @@ exports.update_station_name = function(req,res,next){
 }
 
 exports.get_stations_by_user = function(req, res, next) {
+    console.log(req.params.userId)
     Station.find({
         "user" : req.params.userId
       },

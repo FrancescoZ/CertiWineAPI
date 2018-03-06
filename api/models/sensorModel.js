@@ -7,12 +7,12 @@ var sensorSchema = new mongoose.Schema({
     type: String,
     required: true,
     },
-    battery: {
+  battery: {
       type: Number,
       default: 0,
       required: true
     },
-    state: {
+  state: {
       type:String,
       required: true,
       default: "Active"
@@ -21,6 +21,11 @@ var sensorSchema = new mongoose.Schema({
       type: Schema.Types.ObjectId,
       ref: "Stations",
       required: false
+  },
+  active: {
+    type: Boolean,
+    required: true,
+    default: false
   },
   user: 
   { 
