@@ -18,7 +18,7 @@ exports.get_wines = function(req, res, next) {
 
 exports.get_wine = function(req, res, next) {
     Wine.findOne({
-        "_id" : req.params.windId,
+        "_id" : req.params.wineId,
         "sensor": req.params.sensorId,
         "user": req.params.userId,
         "station": req.params.stationId
@@ -53,7 +53,6 @@ exports.create_wine = function(req, res, next) {
             Wine.create(wine, function(err, wineSaved){
                 if (err)
                     return error.error(err.message,res);
-                console.log(wineSaved);
                 return res.json(wineSaved);
             });
         });
