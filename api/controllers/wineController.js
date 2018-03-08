@@ -6,15 +6,13 @@ var mongoose = require('mongoose'),
   error = require('../utils/error');
 
 exports.get_wines = function(req, res, next) {
-    Wine.findOne({
-        "sensor": req.params.sensorId,
+    Wine.find({
         "user": req.params.userId,
         "station": req.params.stationId
     }, function(err, wines) {
         if (err)
             return error.error(err.message,res);
         res.json(wines);
-        next();
     });
 }
 
@@ -28,7 +26,6 @@ exports.get_wine = function(req, res, next) {
         if (err)
             return error.error(err.message,res);
         res.json(wine);
-        next();
     });
 }
 
@@ -41,27 +38,23 @@ exports.create_wine = function(req, res, next) {
         if (err)
             return error.error(err.message,res);
         sensor.active = true
-        Wine.findOne({ 
-            "_id": req.params.wineId
-        }, function(err,wine){
-            if (err)
-            return error.error(err.message,res);
-            wine.station = req.params.stationId;
-            wine.sensor = req.params.sensorId;
-            wine.user = req.params.userId;
-            wine.name = req.body.name;
-            wine.year = req.body.year;
-            wine.info = req.body.info
+        var wine = {
+            station: req.params.stationId,
+            sensor: req.params.sensorId,
+            user: req.params.userId,
+            name: req.body.name,
+            year: req.body.year,
+            info: req.body.info
+        }
 
-            Sensor.save(sensor, function(err){
+        sensor.save(sensor, function(err){
+            if (err)
+                return error.error(err.message,res);
+            Wine.create(wine, function(err, wineSaved){
                 if (err)
                     return error.error(err.message,res);
-                Wine.save(wine, function(err){
-                    if (err)
-                        return error.error(err.message,res);
-                    res.json("Wine Created");
-                    next();
-                });
+                console.log(wineSaved);
+                return res.json(wineSaved);
             });
         });
     });

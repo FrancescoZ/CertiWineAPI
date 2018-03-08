@@ -62,7 +62,6 @@ exports.get_sensor_by_station = function(req, res, next) {
       },
       function(err, sensors){
         res.json(sensors);
-        next();
       });
 }
 
