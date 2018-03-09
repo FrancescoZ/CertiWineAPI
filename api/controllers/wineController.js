@@ -16,6 +16,16 @@ exports.get_wines = function(req, res, next) {
     });
 }
 
+exports.get_all_wines_by_user = function(req,res,next){
+    Wine.find({
+        "user": req.params.userId,
+    }, function(err, wines) {
+        if (err)
+            return error.error(err.message,res);
+        res.json(wines);
+    });
+}
+
 exports.get_wine = function(req, res, next) {
     Wine.findOne({
         "_id" : req.params.wineId,

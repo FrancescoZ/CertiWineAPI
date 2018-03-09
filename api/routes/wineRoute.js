@@ -17,4 +17,7 @@ module.exports = function(app) {
     
   app.route('/:userId/stations/:stationId/sensors/wines/')
     .get(wines.get_wines)
+
+  app.route('/:userId/wines/')
+    .get(wines.get_all_wines_by_user)
 };
